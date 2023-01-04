@@ -68,7 +68,7 @@ function showFutureTimes2() {
         return false;
     }
 
-    else if (document.getElementById("date").value == "2022-12-01") {
+    else if (document.getElementById("date").value == "2023-01-01") {
 
         alert("Please choose the date of your meeting");
         return false;
