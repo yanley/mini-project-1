@@ -44,21 +44,6 @@ function loadSelectedTimezones() {
         }) 
 }
 
-// function showFutureTimes() {
-//     let selects = document.querySelectorAll(".form-select");
-//     let selectedTimezones="";
-//     selects.forEach(select => {
-// selectedTimezones += select.value+","
-//     })
-//     console.log(selectedTimezones)
-//     let selectedDate = document.getElementById('date').value;
-//     let selectedTime = document.getElementById('appt').value;
-//     window.location="meetingplannerresult.html?tzs="+selectedTimezones+"&d="+selectedDate+"&a="+selectedTime;
-
-// }
-
-//this is the function above that I'm trying to modify below so that form validation is included
-//ideally it will replace lines 47-58 if it works
 
 function showFutureTimes2() {
     if (document.getElementById("form-select").value == "Choose Location...") {
@@ -82,7 +67,13 @@ selectedTimezones += select.value+","
     console.log(selectedTimezones)
     let selectedDate = document.getElementById('date').value;
     let selectedTime = document.getElementById('appt').value;
-    window.location="meetingplannerresult.html?tzs="+selectedTimezones+"&d="+selectedDate+"&a="+selectedTime;
+    fetch('/convertTimezones?tzs="+selectedTimezones+"&d="+selectedDate+"&a="+selectedTime')
+    .then(response => response.json())
+    .then(json => {
+        window.location="meetingplannerresult.html?times-"+json.times;
+    })
+
+   // window.location="meetingplannerresult.html?tzs="+selectedTimezones+"&d="+selectedDate+"&a="+selectedTime;
 }
 }
 
@@ -144,47 +135,5 @@ $(function() {
       }
     });
 
-//I was trying to create form validation with the below...
-// const locationError = document.getElementById("location-error");
-// const dateError = document.getElementById("date-error");
-// const timeError = document.getElementById("time-error");
-
-// function validateDate() {
-//     let date = document.getElementById("date").value;
-
-//     if(date.value == "dd/mm/yyyy"){
-//         dateError.innerHTML = "Date is required";
-//         return false;
-// }
-// dateError.innerHTML = "Valid";
-
-// The below 3 lines are from node.js install notes
-// const dayjs = require('dayjs')
-// import dayjs from 'dayjs' // ES 2015
-// dayjs().format()
-
-// let now = dayjs();
-// console.log(dayjs());
-
-//this displays the current time but not using day.js though!
-// function display_ct() {
-//     let x = new Date()
-//     document.getElementById("ct").innerHTML = x;
-//     display_ct();
-// }
-
-//const tz = dayjs.tz.guess(); //current timezone guess
-
-// const sdtz = "Australia/Sydney"
-//         const nytz = "America/New_York"
-//         const aktz = "Pacific/Auckland"
-//         const sgtz = "Asia/Singapore"
-//         const format = 'hh:mm:ss a DD MMMM'
-//         dayjs.extend(window.dayjs_plugin_utc)
-//         dayjs.extend(window.dayjs_plugin_timezone)
-//         const dayjsLocal = dayjs().tz(sdtz); 
-//         console.log('Sydney: '+dayjsLocal.format(format))
-//         console.log('New_York: '+dayjsLocal.tz(nytz).format(format))
-//         console.log('Auckland: '+dayjsLocal.tz(aktz).format(format))
-//         console.log('Singapore: '+dayjsLocal.tz(sgtz).format(format))
-//        console.log('My timezone: '+dayjs.tz.guess()) //guesses your current time zone.
+    //Jo sent me this bit on Saturday afternoon 4.45pm
+    listItem.innerHTML = `${timezone.tz}: ${timezone.time}`
